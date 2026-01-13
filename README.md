@@ -1,0 +1,2 @@
+# hitungpatron
+menghitung patron
