@@ -3,82 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <title>Kalkulator Produksi Cetakan</title>
+
+  <!-- Wajib agar tampilan HP rapi -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #f2f4f7;
       padding: 20px;
+      margin: 0;
     }
+
     h1 {
       text-align: center;
+      margin-bottom: 20px;
     }
+
     .container {
       max-width: 600px;
       margin: auto;
-      background: #fff;
+      background: #ffffff;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+
     .group {
       margin-bottom: 15px;
     }
+
     label {
       font-weight: bold;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      font-size: 14px;
     }
+
     input {
       width: 100%;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 12px;
+      border-radius: 8px;
       border: 1px solid #ccc;
+      font-size: 16px;
     }
+
     button {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       background: #4CAF50;
       border: none;
       color: #fff;
-      border-radius: 6px;
-      font-size: 16px;
+      border-radius: 8px;
+      font-size: 17px;
       cursor: pointer;
     }
+
     button:hover {
       background: #43a047;
     }
+
     .result {
       margin-top: 20px;
       padding: 15px;
       background: #e8f5e9;
-      border-radius: 6px;
-      font-size: 18px;
-      text-align: center;
+      border-radius: 8px;
+      font-size: 16px;
+      line-height: 1.6;
+      text-align: left;
+      display: none;
+    }
+
+    /* ===== MOBILE OPTIMIZATION ===== */
+    @media (max-width: 600px) {
+
+      body {
+        padding: 12px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .container {
+        padding: 15px;
+        border-radius: 10px;
+      }
+
+      input {
+        padding: 14px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 16px;
+        font-size: 18px;
+      }
+
+      .result {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
 <body>
+
   <h1>🧵 Kalkulator Jumlah Pembuatan</h1>
+
   <div class="container">
 
     <div class="group">
       <label>Jumlah Patron</label>
-      <input type="number" id="cetakan" placeholder="Contoh: 1" />
+      <input type="number" id="cetakan" placeholder="Contoh: 1">
     </div>
 
     <div class="group">
       <label>Hasil per Patron (Baju)</label>
-      <input type="number" id="hasil" placeholder="Contoh: 2" />
+      <input type="number" id="hasil" placeholder="Contoh: 2">
     </div>
 
     <div class="group">
-      <label>Jumlah Baju</label>
-      <input type="number" id="target" placeholder="Contoh: 100" />
+      <label>Target Jumlah Baju</label>
+      <input type="number" id="target" placeholder="Contoh: 100">
     </div>
 
     <button onclick="hitung()">Hitung</button>
 
-    <div class="result" id="output" style="display:none"></div>
+    <div class="result" id="output"></div>
 
   </div>
 
@@ -89,27 +144,26 @@
       const target = parseInt(document.getElementById('target').value);
 
       if (!cetakan || !hasil || !target) {
-        alert('Semua data harus diisi');
+        alert('Semua data harus diisi!');
         return;
       }
 
       const hasilPerProses = cetakan * hasil;
-
-      // proses penuh
       const prosesPenuh = Math.floor(target / hasilPerProses);
       const sisa = target % hasilPerProses;
+      const totalProses = sisa > 0 ? prosesPenuh + 1 : prosesPenuh;
 
-      // jika ada sisa, butuh 1 proses tambahan (tidak penuh)
-      const jumlahProses = sisa > 0 ? prosesPenuh + 1 : prosesPenuh;
-
-      document.getElementById('output').style.display = 'block';
-      document.getElementById('output').innerHTML = `
-        🔢 Jumlah Baju per Patron: <b>${hasilPerProses}</b> baju<br><br>
-        🔁 Full Patron: <b>${prosesPenuh}</b> kali<br><br>
-        ✂️ Proses terakhir menghasilkan: <b>${sisa === 0 ? hasilPerProses : sisa}</b> baju<br><br>
-        👕 Total baju dibuat: <b>${target}</b> baju
+      const output = document.getElementById('output');
+      output.style.display = 'block';
+      output.innerHTML = `
+        🔢 <b>Hasil per proses</b>: ${hasilPerProses} baju<br>
+        🔁 <b>Proses penuh</b>: ${prosesPenuh} kali<br>
+        ✂️ <b>Proses terakhir</b>: ${sisa === 0 ? hasilPerProses : sisa} baju<br>
+        👕 <b>Total baju</b>: ${target} baju<br>
+        📦 <b>Total proses</b>: ${totalProses} kali
       `;
     }
   </script>
+
 </body>
 </html>
