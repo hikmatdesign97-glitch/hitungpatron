@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kalkulator Produksi Cetakan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f4f7;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .group {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4CAF50;
+      border: none;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #43a047;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e8f5e9;
+      border-radius: 6px;
+      font-size: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧵 Kalkulator Jumlah Pembuatan</h1>
+  <div class="container">
+
+    <div class="group">
+      <label>Jumlah Patron</label>
+      <input type="number" id="cetakan" placeholder="Contoh: 1" />
+    </div>
+
+    <div class="group">
+      <label>Hasil per Patron (Baju)</label>
+      <input type="number" id="hasil" placeholder="Contoh: 2" />
+    </div>
+
+    <div class="group">
+      <label>Jumlah Baju</label>
+      <input type="number" id="target" placeholder="Contoh: 100" />
+    </div>
+
+    <button onclick="hitung()">Hitung</button>
+
+    <div class="result" id="output" style="display:none"></div>
+
+  </div>
+
+  <script>
+    function hitung() {
+      const cetakan = parseInt(document.getElementById('cetakan').value);
+      const hasil = parseInt(document.getElementById('hasil').value);
+      const target = parseInt(document.getElementById('target').value);
+
+      if (!cetakan || !hasil || !target) {
+        alert('Semua data harus diisi');
+        return;
+      }
+
+      const hasilPerProses = cetakan * hasil;
+
+      // proses penuh
+      const prosesPenuh = Math.floor(target / hasilPerProses);
+      const sisa = target % hasilPerProses;
+
+      // jika ada sisa, butuh 1 proses tambahan (tidak penuh)
+      const jumlahProses = sisa > 0 ? prosesPenuh + 1 : prosesPenuh;
+
+      document.getElementById('output').style.display = 'block';
+      document.getElementById('output').innerHTML = `
+        🔢 Jumlah Baju per Patron: <b>${hasilPerProses}</b> baju<br><br>
+        🔁 Full Patron: <b>${prosesPenuh}</b> kali<br><br>
+        ✂️ Proses terakhir menghasilkan: <b>${sisa === 0 ? hasilPerProses : sisa}</b> baju<br><br>
+        👕 Total baju dibuat: <b>${target}</b> baju
+      `;
+    }
+  </script>
+</body>
+</html>
